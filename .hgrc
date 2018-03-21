@@ -1,0 +1,76 @@
+[ui]
+# username = Vsevolod Velichko <torkve@yandex-team.ru>
+username = Vsevolod Velichko <torkvemada@sorokdva.net>
+logtemplate = '{label("log.changeset changeset.{phase}", "набор изм-й:   {rev}:{node|short}\n")}{if(svnrev, label("log.svnrev", "ревизия svn:   r{svnrev}\n"))}{ifeq(branch, "default", "", label("log.branch", "ветка:         {branch}\n"))}{label("log.bookmark", bookmarks % "закладка:      {bookmark}\n")}{label("log.tag", tags % "метка:         {tag}\n")}{label("log.parent", parents % "родитель:      {rev}:{node|short}\n")}{label("log.user", "автор:         {author}\n")}{label("log.date", "дата:          {date|rfc822date} ({date|age})\n")}{label("log.summary", "сводка:        {desc|firstline}\n")}\n'
+#style = ~/.config/hg/compact.style
+interface = curses
+paginate = no
+
+[alias]
+del = remove
+lll = log
+ll = log --template default
+lls = log --template shortlog
+l = log -l20
+ls = l --template shortlog
+log = l -f -G
+s = ls -f -G
+show = lll -v -pr
+sh = show
+sta = status
+st = status .
+
+[diff]
+showfunc = True
+git = True
+
+[merge-tools]
+vimdiff.disabled = False
+vimdiff.priority = 10000
+
+[bookmarks]
+track.current = True
+
+[extensions]
+# external extension
+activity = /home/torkve/workspace/hgactivity/activity
+bookmarks =
+churn =
+color =
+convert =
+# external extension
+hgext.crecord = /home/torkve/workspace/hgcrecord/crecord
+# external extension
+fastimport = /home/torkve/workspace/hg-fastimport/hgfastimport
+# mercurial-git package
+hgext.git =
+hgext.shelve =
+# external extension, has to be installed (currently from pip)
+hgsubversion =
+histedit =
+# mq =
+progress =
+purge =
+rebase =
+# external extension
+release=/home/torkve/workspace/hg-release/release.py
+schemes =
+strip =
+
+[schemes]
+bb = https://bitbucket.org/
+gh = git+ssh://github.com/
+
+[templates]
+shortlog = '{if(svnrev, label("log.svnrev", "[r{svnrev}] "))}{label("log.user", "{author|user}")} {label("log.summary", "{desc|firstline}")}\n'
+
+[hooks]
+pretxncommit = python:flake8.hooks.hg_hook
+qrefresh = python:flake8.hooks.hg_hook
+
+[flake8]
+# use flake8==2.4.1, later ones are broken
+complexity = 10
+ignore = W503
+lazy = False
+strict = False
