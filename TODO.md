@@ -5,3 +5,8 @@ vim
 * syntastic → ALE
 * YouCompleteMe + mozilla/rust + racer-rust/vim-racer → ?
 * neocomplete → asyncomplete? YCM?
+
+hgrc
+----
+
+* add references to extension sources
