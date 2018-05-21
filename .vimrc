@@ -68,7 +68,7 @@ NeoBundle 'Shougo/neocomplete.vim', {'vim_version': '7.3.885'}
 NeoBundleLazy 'tpope/vim-commentary', {'autoload': {'filetypes': ['python', 'ocaml', 'cpp']}}
 
 " проверка синтаксиса
-NeoBundle 'scrooloose/syntastic'
+NeoBundle "w0rp/ale"
 
 " Сниппеты
 " NeoBundle 'SirVer/ultisnips'
@@ -99,7 +99,7 @@ NeoBundleLazy 'Valloric/YouCompleteMe', {
                 \ 'windows' : 'install.py',
                 \ 'cygwin'  : './install.py'
             \ },
-            \ 'autoload': {'filetypes': ['cpp', 'rust']}}
+            \ 'autoload': {'filetypes': ['c', 'cpp', 'rust']}}
 
 " QML
 NeoBundleLazy 'peterhoeg/vim-qml', {'autoload': {'filetypes': ['qml']}}
@@ -569,8 +569,13 @@ let g:unite_source_menu_menus.code.command_candidates = [
     \['▷ refactorize - move current module          (rope)          ⌘ C-C r 1 m', 'RopeMoveCurrentModule'],
     \['▷ refactorize - module to package            (rope)          C-c r 1 p', 'call pymode#rope#module_to_package()'],
     \['▷ show docs for current word                 (rope)          C-c r a d', 'call pymode#rope#show_doc()'],
-    \['▷ syntastic check                            (syntastic)',            'SyntasticCheck'],
-    \['▷ syntastic errors                           (syntastic)',            'Errors'],
+    \['▷ ALE check                                  (ALE)',                  'ALELint'],
+    \['▷ ALE go to definition                       (ALE)',                  'ALEGoToDefinition'],
+    \['▷ ALE go to definition in tab                (ALE)',                  'ALEGoToDefinitionInTab'],
+    \['▷ ALE find references                        (ALE)',                  'ALEFindReferences'],
+    \['▷ ALE hover information                      (ALE)',                  'ALEHover'],
+    \['▷ ALE suggest fixes                          (ALE)',                  'ALEFixSuggest'],
+    \['▷ ALE fix                                    (ALE)',                  'ALEFix'],
     \['▷ run coverage2                              (coveragepy)',           'call system("coverage2 run ".bufname("%")) | Coveragepy report'],
     \['▷ run coverage3                              (coveragepy)',           'call system("coverage3 run ".bufname("%")) | Coveragepy report'],
     \['▷ toggle coverage report                     (coveragepy)',           'Coveragepy session'],
@@ -1072,19 +1077,27 @@ let g:DoxygenToolkit_briefTag_funcName="yes"
 let g:DoxygenToolkit_briefTag_className="yes"
 " }}}
 
-" Syntastic {{{
-let g:syntastic_python_pylint_exe = "pylint2"
-
-let g:syntastic_filetype_map = {'rst': 'sphinx'}
-let g:syntastic_mode_map = { 'mode': 'active',
-                           \ 'active_filetypes': [],
-                           \ 'passive_filetypes': ['python'] }
-let g:syntastic_python_checkers = []
-
-let g:syntastic_error_symbol='✗'
-let g:syntastic_warning_symbol='⚠'
-let g:syntastic_style_error_symbol  = '⚡'
-let g:syntastic_style_warning_symbol  = '⚡'
+" ALE {{{
+let g:ale_lint_on_enter = 0
+let g:ale_completion_enabled = 0
+" unlike syntastic, ALE has no sphinx checker
+" let g:ale_linter_aliases = {'rst': 'sphinx'}
+let g:ale_linter_aliases = {'bash': 'sh'}
+let g:ale_linters = {
+    \ 'c': [],
+    \ 'cpp': [],
+    \ 'python': ['flake8'],
+    \ }
+let g:ale_sign_error = '✗'
+let g:ale_sign_warning = '⚠'
+let g:ale_sign_style_error = '⚡'
+let g:ale_sign_style_warning = '⚡'
+let g:ale_echo_delay = 100
+let g:ale_lint_delay = 500
+augroup CloseLoclistWindowGroup
+    autocmd!
+    autocmd QuitPre * if empty(&buftype) | lclose | endif
+augroup END
 " }}}
 
 " Информация о пользователе {{{
