@@ -1091,8 +1091,8 @@ augroup END
 " }}}
 
 " {{{ VimFiler
-nmap <F8> :VimFiler<cr>
-imap <F8> <esc>:VimFiler<cr>
+nmap <F8> :VimFilerExplorer<cr>
+imap <F8> <esc>:VimFilerExplorer<cr>
 " }}}
 
 " Информация о пользователе {{{
