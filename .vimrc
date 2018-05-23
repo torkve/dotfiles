@@ -124,7 +124,7 @@ NeoBundle 'mhinz/vim-signify'
 NeoBundle 'mhinz/vim-startify'
 
 " Файловый менеджер
-" NeoBundleLazy 'Shougo/vimfiler', {'autoload' : { 'commands' : ['VimFiler']}}
+NeoBundleLazy 'Shougo/vimfiler', {'autoload' : { 'commands' : ['VimFiler']}}
 
 " reveals all the character info, Unicode included
 NeoBundle 'tpope/vim-characterize'
@@ -192,9 +192,6 @@ NeoBundleLazy 'conque-gdb', {'type': 'nosync', 'base': $VIMHOME.'/bundle', 'auto
 
 " Цветовая схема
 NeoBundle 'Lokaltog/vim-distinguished', 'develop'
-
-" много курсоров
-" NeoBundle 'terryma/vim-multiple-cursors'
 
 " Jabber
 " NeoBundle "ironcamel/vimchat", {
@@ -418,7 +415,7 @@ let g:unite_source_menu_menus.files.command_candidates = [
     \['▷ junk files                                                 ⌘ ,d',   'Unite junkfile/new junkfile'],
     \['▷ save as root                                               ⌘ :w!!', 'exe "write !sudo tee % >/dev/null"'],
     \['▷ quick save                                                 ⌘ ,w',   'normal ,w'],
-    \['▷ open vimfiler                                              ⌘ ,X',   'VimFiler'],
+    \['▷ open vimfiler                                              <F8>',   'VimFiler'],
     \]
 nnoremap <silent>[menu]o :Unite -silent -winheight=17 -start-insert menu:files<CR>
 " }}}
@@ -548,6 +545,7 @@ let g:unite_source_menu_menus.code = {
     \ 'description' : '           code tools                                            ⌘ [space]p',
     \}
 let g:unite_source_menu_menus.code.command_candidates = [
+    \['▷ view current diff                          (patchreview)',          'DiffReview'],
     \['▷ run python code                            (pymode)        ⌘ ,r',   'Pyrun'],
     \['▷ show docs for the current word             (pymode)        ⌘ K',    'normal K'],
     \['▷ insert a breakpoint                        (pymode)        ⌘ ,B',   'normal ,B'],
@@ -1090,6 +1088,11 @@ augroup CloseLoclistWindowGroup
     autocmd!
     autocmd QuitPre * if empty(&buftype) | lclose | endif
 augroup END
+" }}}
+
+" {{{ VimFiler
+nmap <F8> :VimFiler<cr>
+imap <F8> <esc>:VimFiler<cr>
 " }}}
 
 " Информация о пользователе {{{
