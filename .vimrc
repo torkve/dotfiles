@@ -62,7 +62,6 @@ NeoBundleLazy 'vim-scripts/hexman.vim', {'autoload': {'mappings': [['ni', '<Plug
 " Автодополнение (, [, {, ', ", ...
 NeoBundle 'kana/vim-smartinput'
 NeoBundle 'Shougo/neocomplete.vim', {'vim_version': '7.3.885'}
-" NeoBundle 'Shougo/neocomplcache'
 
 " закомментирование кода
 NeoBundleLazy 'tpope/vim-commentary', {'autoload': {'filetypes': ['python', 'ocaml', 'cpp']}}
@@ -1051,17 +1050,10 @@ let g:neocomplete#min_keyword_length = 3
 let g:neocomplete#sources#syntax#min_keyword_length = 3
 let g:neocomplete#data_directory = $VIMHOME.'/.tmp/neocomplete'
 
-" let g:neocomplcache_snippets_dir = "$VIMHOME/bundle/vim-snippets/snippets"
-
 if !exists('g:neocomplete#force_omni_input_patterns')
     let g:neocomplete#force_omni_input_patterns = {}
 endif
 let g:neocomplete#force_omni_input_patterns.ocaml = '[^. *\t]\.\w*\|\h\w*|#'
-"inoremap <expr><CR>   neocomplcache#smart_close_popup() . "\<CR>"
-"inoremap <expr><C-h>  neocomplcache#smart_close_popup()."\<C-h>"
-"inoremap <expr><BS>   neocomplcache#smart_close_popup()."\<C-h>"
-"inoremap <expr><C-y>  neocomplcache#close_popup()
-"inoremap <expr><C-e>  neocomplcache#cancel_popup()
 
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown,mkd setlocal omnifunc=htmlcomplete#CompleteTags
