@@ -59,6 +59,8 @@ strip =
 
 [schemes]
 bb = https://bitbucket.org/
+bbs = ssh://trkv@bitbucket.org/
+bbt = bbs://trkv/
 gh = git+ssh://github.com/
 
 [templates]
