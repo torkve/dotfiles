@@ -3,7 +3,7 @@ vim
 
 * NeoBundle → dein (it appears to not support hg at the moment)
 * YouCompleteMe + mozilla/rust + racer-rust/vim-racer → ?
-* neocomplete → asyncomplete? YCM?
+* neocomplete → asyncomplete? YCM? deoplete?
 * port sphinx linter from syntastic for RST in ALE
 
 hgrc
