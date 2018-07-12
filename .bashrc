@@ -127,34 +127,38 @@ compileOnce ()
     INFILE="$(mktemp --tmpdir --suffix=.cpp)"
     OUTFILE="$(mktemp --tmpdir)"
     {
-        echo "#include <sstream>"
-        echo "#include <iostream>"
-        echo "#include <iomanip>"
-        echo "#include <map>"
-        echo "#include <list>"
-        echo "#include <vector>"
-        echo "#include <limits>"
-        echo "#include <bitset>"
-        echo "#include <stddef.h>"
-        echo "#include <string.h>"
-        echo "#include <set>"
-        echo "#include <math.h>"
-        echo "#include <ctime>"
-        echo "#include <limits.h>"
-        echo "#include <signal.h>"
-        echo "#include <unistd.h>"
-        echo "#include <exception>"
-        echo "#include <stdexcept>"
-        echo "#include <typeinfo>"
-        echo "#include <thread>"
-        echo "#include <sys/types.h>"
-        echo "#include <sys/socket.h>"
-        echo "#include <netdb.h>"
-        echo "#include <netinet/in.h>"
-        echo "#include <netinet/tcp.h>"
-        echo "int main(int argc, char **argv) {"
-        echo "$1"
-        echo "return 0; }"
+        cat <<EOF
+#include <sstream>
+#include <iostream>
+#include <iomanip>
+#include <map>
+#include <list>
+#include <vector>
+#include <limits>
+#include <bitset>
+#include <stddef.h>
+#include <string.h>
+#include <set>
+#include <math.h>
+#include <ctime>
+#include <limits.h>
+#include <signal.h>
+#include <unistd.h>
+#include <exception>
+#include <stdexcept>
+#include <typeinfo>
+#include <thread>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+
+int main(int argc, char **argv) {
+    $1
+    return 0;
+}
+EOF
     } >"$INFILE"
     "$COMPILER" -std=c++11 -O3 $LOCAL_CFLAGS -o "$OUTFILE" "$INFILE" -lrt -ldl
     "$OUTFILE"
@@ -225,18 +229,17 @@ parse_hg_status () {
     [ -z "$HG_BIN" ] && return
 
     HG_SUM=$(LANGUAGE=en LANG=C $HG_BIN summary 2>/dev/null)
-    while read LINE;
+    while read -r LINE;
     do
         case "$LINE" in
             branch*)
-                HG_BRANCH=$(expr match "$LINE" "branch: \(.*\)\s*" 2>/dev/null)
+                [[ $LINE =~ branch:\ (.*) ]] && HG_BRANCH=${BASH_REMATCH[1]}
                 ;;
             bookmarks*)
-                HG_BRANCH=$(expr match "$LINE" "bookmarks: \(.*\)\s*" 2>/dev/null)
+                [[ $LINE =~ bookmarks:\ (.*) ]] && HG_BRANCH=${BASH_REMATCH[1]}
                 ;;
             commit*)
-                expr match "$LINE" ".*(clean)" &>/dev/null \
-                    && ! expr match "$LINE" ".*unknown.*" &>/dev/null \
+                [[ $LINE =~ \(clean\) && ! $LINE =~ unknown ]] \
                     || HG_DIRTY=true
                 ;;
         esac
@@ -301,7 +304,7 @@ prompt_command () {
     fi
 
     UPPER_LINE="${USER}@${HOSTNAME}:${PWD}${PS1_VCS} ${TIMESTAMP}"
-    UPPER_LEN=$(printf "$UPPER_LINE" | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" | wc -c | tr -d " ")
+    UPPER_LEN=$(printf "%s" "$UPPER_LINE" | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" | wc -c | tr -d " ")
     # calculate fillsize
     fillsize=$((COLUMNS-UPPER_LEN-1))
 
