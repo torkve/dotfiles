@@ -61,7 +61,7 @@ strip =
 bb = https://bitbucket.org/
 bbs = ssh://trkv@bitbucket.org/
 bbt = bbs://trkv/
-gh = git+ssh://github.com/
+gh = git+ssh://git@github.com/
 
 [templates]
 shortlog = '{if(svnrev, label("log.svnrev", "[r{svnrev}] "))}{label("log.user", "{author|user}")} {label("log.summary", "{desc|firstline}")}\n'
