@@ -53,8 +53,8 @@ if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
     color_white="\[$(/usr/bin/tput setaf 7)\]"
     color_gray="\[$(/usr/bin/tput setaf 8)\]"
     color_off="\[$(/usr/bin/tput sgr0)\]"
-    color_error="$(/usr/bin/tput setab 1)$(/usr/bin/tput setaf 7)"
-    color_error_off="$(/usr/bin/tput sgr0)"
+    color_error="\[$(/usr/bin/tput setab 1)\]\[$(/usr/bin/tput setaf 7)\]"
+    color_error_off="\[$(/usr/bin/tput sgr0)\]"
 fi
 # }}}
 
