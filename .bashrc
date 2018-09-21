@@ -29,11 +29,6 @@ export RIPGREP_CONFIG_PATH=$HOME/.config/ripgreprc
 export LESS="-R -M --shift 5"
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
-fi
-
  # setup colors {{{
 color_is_on=
 color_red=
@@ -54,7 +49,6 @@ if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
     color_gray="\[$(/usr/bin/tput setaf 8)\]"
     color_off="\[$(/usr/bin/tput sgr0)\]"
     color_error="\[$(/usr/bin/tput setab 1)\]\[$(/usr/bin/tput setaf 7)\]"
-    color_error_off="\[$(/usr/bin/tput sgr0)\]"
 fi
 # }}}
 
@@ -86,14 +80,6 @@ alias l='ls -CF'
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
 # }}}
 
 # Global completion {{{
