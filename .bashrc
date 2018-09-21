@@ -34,7 +34,7 @@ if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-# setup colors {{{
+ # setup colors {{{
 color_is_on=
 color_red=
 color_green=
@@ -275,6 +275,7 @@ prompt_command () {
     local UPPER_LEN
     local fillsize
     local FILL
+    local VENV
 
     # errno
     if [ $RETCODE -eq 0 ];
@@ -303,8 +304,12 @@ prompt_command () {
         esac
     fi
 
-    UPPER_LINE="${USER}@${HOSTNAME}:${PWD}${PS1_VCS} ${TIMESTAMP}"
-    UPPER_LEN=$(printf "%s" "$UPPER_LINE" | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" | wc -c | tr -d " ")
+    if [ ! -z "$VIRTUAL_ENV" ]; then
+        VENV="${color_yellow}($(basename "$VIRTUAL_ENV"))${color_off} "
+    fi
+
+    UPPER_LINE="${VENV}${USER}@${HOSTNAME}:${PWD}${PS1_VCS} ${TIMESTAMP}"
+    UPPER_LEN=$(printf "%s" "$UPPER_LINE" | sed -r "s/\[?\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]\]?//g" | wc -c | tr -d " ")
     # calculate fillsize
     fillsize=$((COLUMNS-UPPER_LEN-1))
 
@@ -313,7 +318,7 @@ prompt_command () {
     FILL="${FILL}${color_off}"
     
     # set new color prompt
-    PS1="${color_user}\u${color_off}@${color_yellow}\h${color_off}:${color_white}\w${color_off}${PS1_VCS} ${color_blue}${TIMESTAMP}${color_off} ${FILL}\n${RETCODE} ➜ "
+    PS1="${VENV}${color_user}\u${color_off}@${color_yellow}\h${color_off}:${color_white}\w${color_off}${PS1_VCS} ${color_blue}${TIMESTAMP}${color_off} ${FILL}\n${RETCODE} ➜ "
 }
 PROMPT_COMMAND=prompt_command
 # }}}
