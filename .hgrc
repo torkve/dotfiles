@@ -54,6 +54,7 @@ purge =
 rebase =
 # external extension
 release=/home/torkve/workspace/hg-release/release.py
+repostate=/home/torkve/workspace/hg-repostate/repostate.py
 schemes =
 strip =
 
