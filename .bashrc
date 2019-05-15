@@ -208,7 +208,7 @@ parse_git_status () {
     local CUR_DIR
 
     # exit if no git found in system
-    GIT_BIN=$(which git 2>/dev/null)
+    GIT_BIN=$(command -v git 2>/dev/null)
     [ -z "$GIT_BIN" ] && return
 
     # check we are in git repo
@@ -236,9 +236,8 @@ parse_hg_status () {
     local HG_BRANCH
     local HG_DIRTY
     local HG_BIN
-    local HG_SUM
 
-    HG_BIN=$(which hg 2>/dev/null)
+    HG_BIN=$(command -v hg 2>/dev/null)
     [ -z "$HG_BIN" ] && return
 
     HG_BRANCH=$(LANGUAGE=en LANG=C $HG_BIN repostate 2>/dev/null)
@@ -258,7 +257,7 @@ parse_bzr_status () {
     local BZR_BRANCH
     local BZR_DIRTY
 
-    BZR_BIN=$(which bzr 2>/dev/null)
+    BZR_BIN=$(command -v bzr 2>/dev/null)
     [ -z "$BZR_BIN" ] && return
 
     BZR_BRANCH=$($BZR_BIN nick 2>/dev/null)
