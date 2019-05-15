@@ -252,6 +252,27 @@ parse_hg_status () {
     esac
 }
 
+parse_arc_status() {
+    local YA_BIN
+    local ARC_BRANCH
+    local ARC_DIRTY
+
+    YA_BIN=$(command -v ya 2>/dev/null)
+    [ -z "$YA_BIN" ] && return
+
+    local ARC_BIN="$YA_BIN tool arc"
+    while read -r LINE;
+    do
+        if [[ "$LINE" =~ ^##\ ([a-z0-9_-]+)\.\.\. ]];
+        then
+            ARC_BRANCH=${BASH_REMATCH[1]}
+        else
+            ARC_DIRTY=1
+        fi
+    done < <( $ARC_BIN status -bs -u no 2>/dev/null )
+    make_vcs_status arc "$ARC_BRANCH" "$ARC_DIRTY"
+}
+
 parse_bzr_status () {
     local BZR_BIN
     local BZR_BRANCH
@@ -292,6 +313,7 @@ prompt_command () {
     # parse VCS status
     [ -z "$PS1_VCS" ] && PS1_VCS=$(parse_hg_status)
     [ -z "$PS1_VCS" ] && PS1_VCS=$(parse_git_status)
+    [ -z "$PS1_VCS" ] && PS1_VCS=$(parse_arc_status)
     [ -z "$PS1_VCS" ] && PS1_VCS=$(parse_bzr_status)
     
     TIMESTAMP="[$(date +'%Y-%m-%d %H:%M:%S')]"
