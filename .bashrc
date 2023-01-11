@@ -98,6 +98,7 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
+alias rgv='rg --vimgrep'
 
 # some more ls aliases
 alias ll='ls -alF'
@@ -107,6 +108,8 @@ alias l='ls -CF'
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+alias mypy='python3 -m mypy'
 # }}}
 
 # Global completion {{{
@@ -116,6 +119,10 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
+
+# NOTE additional completions are stored in $HOME/.local/share/bash-completion/completions/*
+# and it must be a directory, not symlink, or it would be skipped by bash.
+# But you may symlink $HOME/.local/share/bash-completion/
 # }}}
 
 # One time C++ code compilation and run {{{
@@ -124,6 +131,11 @@ compileOnce ()
     local INFILE
     local OUTFILE
     local COMPILER
+
+    if [ "$#" -eq "0" ]; then
+        echo "Usage: compileOnce [CFLAGS]... CODE"
+        return 1
+    fi
 
     COMPILER="$CXX"
     if [ -z "$COMPILER" ];
