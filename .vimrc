@@ -174,7 +174,6 @@ NeoBundleLazy 'torkve/ocaml-conceal.vim', {'autoload': {'filetypes': ['ocaml']}}
 
 " Rust
 " NOTE: use 'cargo install racer' and 'rustup component add rust-src'
-NeoBundleLazy 'mozilla/rust', {'install_process_timeout': 900}
 NeoBundleLazy 'rust-lang/rust.vim', {'autoload': {'filetypes': 'rust', 'filename_patterns': '*.rs'}}
 NeoBundleLazy 'racer-rust/vim-racer', {'autoload': {'filetypes': 'rust', 'filename_patterns': '*.rs'}, 'install_process_timeout': 900}
 
@@ -965,8 +964,10 @@ let g:rust_folding = 2
 let g:rust_bang_comment_leader = 1
 let g:racer_cmd = $HOME.'/.cargo/bin/racer'
 let g:racer_experimental_completer = 1
-let $RUST_SRC_PATH = $VIMHOME.'/bundle/rust/src'
-let g:ycm_rust_src_path = $VIMHOME.'/bundle/rust/src'
+" let $RUST_SRC_PATH = $VIMHOME.'/bundle/rust/src'
+" let g:ycm_rust_src_path = $VIMHOME.'/bundle/rust/src'
+let $RUST_SRC_PATH = $HOME."/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"
+let g:ycm_rust_src_path = $RUST_SRC_PATH
 let g:ftplugin_rust_source_path = $RUST_SRC_PATH
 
 " au User lsp_setup call lsp#register_server({
