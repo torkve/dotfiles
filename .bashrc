@@ -182,6 +182,8 @@ compileOnce ()
 #include <netdb.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
+#include <grp.h>
+#include <byteswap.h>
 
 int main(int argc, char **argv) {
     $1
