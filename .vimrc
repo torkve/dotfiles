@@ -255,6 +255,7 @@ set fillchars=vert:\|,fold:-,diff:·
 set listchars=tab:\ \  " Табы отображать пробелами
 set showbreak= " Не отображать разрывы строк
 set concealcursor="nvi" " Менять операторы на картинки во всех режимах
+set balloonevalterm
 
 set wildmenu " использовать меню для завершения команд
 set wildmode=full " по первому табу показывать список и завершать самой длинной командой, по второму дополнять следующим вариантом и показывать меню
@@ -1091,6 +1092,7 @@ let g:ale_sign_style_error = '⚡'
 let g:ale_sign_style_warning = '⚡'
 let g:ale_echo_delay = 100
 let g:ale_lint_delay = 500
+let g:ale_set_balloons = 1
 augroup CloseLoclistWindowGroup
     autocmd!
     autocmd QuitPre * if empty(&buftype) | lclose | endif
