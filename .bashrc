@@ -273,21 +273,6 @@ parse_arc_status() {
     make_vcs_status arc "$ARC_BRANCH" "$ARC_DIRTY"
 }
 
-parse_bzr_status () {
-    local BZR_BIN
-    local BZR_BRANCH
-    local BZR_DIRTY
-
-    BZR_BIN=$(command -v bzr 2>/dev/null)
-    [ -z "$BZR_BIN" ] && return
-
-    BZR_BRANCH=$($BZR_BIN nick 2>/dev/null)
-    [ -n "$BZR_BRANCH" ] || return
-    BZR_DIRTY="$($BZR_BIN st 2>/dev/null)"
-    
-    make_vcs_status bzr "$BZR_BRANCH" "$BZR_DIRTY"
-}
-
 # }}}
 
 # Prompt {{{
@@ -314,7 +299,6 @@ prompt_command () {
     [ -z "$PS1_VCS" ] && PS1_VCS=$(parse_hg_status)
     [ -z "$PS1_VCS" ] && PS1_VCS=$(parse_git_status)
     [ -z "$PS1_VCS" ] && PS1_VCS=$(parse_arc_status)
-    [ -z "$PS1_VCS" ] && PS1_VCS=$(parse_bzr_status)
     
     TIMESTAMP="[$(date +'%Y-%m-%d %H:%M:%S')]"
 
