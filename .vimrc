@@ -840,7 +840,7 @@ function! s:StripTrailingWhitespace()
     normal `Z
 endfunction
 
-au FileType html,css,sass,javascript,php,ruby,psql,vim,cpp,c au BufWritePre <buffer> :silent! call <SID>StripTrailingWhitespace()
+au FileType sass,php,ruby,psql,vim,cpp,c au BufWritePre <buffer> :silent! call <SID>StripTrailingWhitespace()
 
 " Подсвечивать проблемные пробелы (пробелы перед табуляцией
 hi RedundantSpaces ctermfg=214 ctermbg=160 cterm=bold
