@@ -8,6 +8,17 @@ else
 endif
 " }}}
 
+
+set exrc
+set secure
+let g:go_fmt_autosave = 1
+let g:go_imports_autosave = 1
+let g:go_def_mode = 'gopls'
+let g:go_info_mode = 'gopls'
+let g:go_gopls_local = 'a.yandex-team.ru'
+let g:go_gopls_settings = { 'directoryFilters': [ '-', '+infra', '-library', '+library/go', '+vendor' ], 'expandWorkspaceToModule': v:false }
+" let g:go_gebug = ['shell-commands', 'lsp']
+
 " Настройки для включения/выключения хоткеев {{{
 " они должны обязательно быть в самом начале до плагинов, иначе не работают
 let g:errormarker_disablemappings = 1
@@ -78,7 +89,8 @@ NeoBundle "w0rp/ale"
 NeoBundle 'powerman/vim-plugin-viewdoc'
 
 " Go
-NeoBundleLazy 'jnwhiteh/vim-golang', {'autoload': {'filetypes': ['go']}}
+NeoBundleLazy 'fatih/vim-go', {'autoload': {'filetypes': ['go']}}
+" NOTE: call :GoInstallBinaries after installation
 
 " python
 NeoBundleLazy 'klen/python-mode', 'develop', {'autoload': {'filetypes': ['python']}}
@@ -872,8 +884,18 @@ augroup END
 " }}}
 
 " Golang {{{
+function! s:SetGoPath()
+    if !exists("g:yagopath")
+        let g:yagopath = trim(system("ya tool go --print-toolchain-path"))
+	let $PATH=g:yagopath."/bin:".$PATH
+    endif
+    execute "GoPath" g:yagopath
+endfunction
 augroup golang
+    au!
     au FileType go set sts=8 ts=8 sw=8 noet
+    au FileType go call s:SetGoPath()
+augroup END
 " }}}
 
 " Бинарные файлы {{{
