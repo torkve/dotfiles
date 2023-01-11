@@ -7,6 +7,8 @@ interface = curses
 paginate = no
 
 [alias]
+cre = ci -i
+crecord = ci -i
 del = remove
 lll = log
 ll = log --template default
@@ -39,21 +41,21 @@ churn =
 color =
 convert =
 # external extension
-hgext.crecord = /home/torkve/workspace/hgcrecord/crecord
-# external extension
-fastimport = /home/torkve/workspace/hg-fastimport/hgfastimport
-# mercurial-git package
-hgext.git =
+# hgext.crecord = /home/torkve/workspace/hgcrecord/crecord
+# external extension, also requires 'pip install fastimport hg-fastimport'
+fastimport =
+# pip install hg-git
+hggit =
 hgext.shelve =
 # external extension, has to be installed (currently from pip)
-hgsubversion =
+# hgsubversion =
 histedit =
 # mq =
 progress =
 purge =
 rebase =
 # external extension
-release=/home/torkve/workspace/hg-release/release.py
+# release=/home/torkve/workspace/hg-release/release.py
 repostate=/home/torkve/workspace/hg-repostate/repostate.py
 schemes =
 strip =
@@ -68,11 +70,13 @@ gh = git+ssh://git@github.com/
 shortlog = '{if(svnrev, label("log.svnrev", "[r{svnrev}] "))}{label("log.user", "{author|user}")} {label("log.summary", "{desc|firstline}")}\n'
 
 [hooks]
-pretxncommit = python:flake8.hooks.hg_hook
-qrefresh = python:flake8.hooks.hg_hook
+# pretxncommit = python:flake8.hooks.hg_hook
+# qrefresh = python:flake8.hooks.hg_hook
+# pretxncommit = python:flake8.main.mercurial.hook
+qrefresh = python:flake8.main.mercurial.hook
 
 [flake8]
-# use flake8==2.4.1, later ones are broken
+# use flake8==3.6.0, other ones are broken
 complexity = 10
 ignore = W503
 lazy = False
