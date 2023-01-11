@@ -205,9 +205,9 @@ make_vcs_status () {
     then
         if [ ! -z "$color_is_on" ]; then
             if [ -z "$dirty" ]; then
-                echo " ($vcs: ${color_green}${branch}${color_off})"
+                echo " ($vcs: ${color_green}✅${branch}${color_off})"
             else
-                echo " ($vcs: ${color_red}${branch}${color_off})"
+                echo " ($vcs: ${color_red}❌${branch}${color_off})"
             fi
         else
             echo " ($vcs: ${branch})"
@@ -269,23 +269,25 @@ parse_hg_status () {
 }
 
 parse_arc_status() {
-    local YA_BIN
+    local ARC_BIN
     local ARC_BRANCH
     local ARC_DIRTY
 
-    YA_BIN=$(command -v ya 2>/dev/null)
-    [ -z "$YA_BIN" ] && return
+    ARC_BIN=$(command -v arc 2>/dev/null)
+    [ -z "$ARC_BIN" ] && return
 
-    local ARC_BIN="$YA_BIN tool arc"
     while read -r LINE;
     do
-        if [[ "$LINE" =~ ^##\ ([a-z0-9_-]+)\.\.\. ]];
+        if [[ "$LINE" =~ ^##\ ([a-zA-Z0-9_-]+)\.\.\. ]];
         then
             ARC_BRANCH=${BASH_REMATCH[1]}
+        elif [[ "$LINE" =~ ^##\ ([a-zA-Z0-9_-]+) ]];
+        then
+            ARC_BRANCH=${BASH_REMATCH[1]}❓
         else
             ARC_DIRTY=1
         fi
-    done < <( $ARC_BIN status -bs -u no 2>/dev/null )
+    done < <( $ARC_BIN status -bs -u no --no-ahead-behind --no-sync-status 2>/dev/null )
     make_vcs_status arc "$ARC_BRANCH" "$ARC_DIRTY"
 }
 
