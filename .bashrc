@@ -18,8 +18,8 @@ shopt -s globstar
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=4000
-HISTFILESIZE=10000
+HISTSIZE=10000
+HISTFILESIZE=100000
 # }}}
 
 export QUICKLY_EDITOR=vim
