@@ -205,6 +205,9 @@ NeoBundleLazy "diepm/vim-rest-console", {'autoload': {'filetypes': ['rest']}}
 " Scala
 NeoBundleLazy 'derekwyatt/vim-scala', {'autoload': {'filetypes': ['scala']}}
 
+" TOML
+NeoBundleLazy 'maralla/vim-toml-enhance', {'depends': 'cespare/vim-toml', 'autoload': {'filetypes': ['toml']}}
+
 NeoBundleCheck " Проверяем бандлы, при необходимости устанавливаем
 
 call neobundle#end()
