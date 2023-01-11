@@ -182,9 +182,9 @@ NeoBundleLazy 'racer-rust/vim-racer', {'autoload': {'filetypes': 'rust', 'filena
 NeoBundle 'vim-scripts/errormarker.vim'
 
 " project
-NeoBundle 'bitbucket:dfrank/vim-dfutil'
-NeoBundle 'bitbucket:dfrank/vim-indexer'
-NeoBundle 'bitbucket:dfrank/vimprj'
+NeoBundle 'dimonomid/vim-dfrank-util'
+NeoBundle 'dimonomid/vim-indexer'
+NeoBundle 'dimonomid/vim-vimprj'
 
 NeoBundle 'doxygen-toolkit', {'type': 'nosync', 'base': $VIMHOME.'/bundle'}
 NeoBundleLazy 'conque-gdb', {'type': 'nosync', 'base': $VIMHOME.'/bundle', 'autoload': {'filetypes': ['cpp']}}
@@ -938,6 +938,9 @@ let g:pymode_syntax_all = 1
 " let g:jedi#completions_command = "<C-Tab>"
 " let g:jedi#popup_select_first = 1 " выбирать первый же вариант при автокомплите
 
+let g:ale_python_mypy_options = '--ignore-missing-imports'
+let g:ale_python_mypy_executable = 'python3 -m mypy'
+
 nmap <F9> :VoomToggle python<cr><tab>
 imap <F9> <esc>:VoomToggle python<cr><tab>
 " }}}
@@ -1077,7 +1080,7 @@ let g:ale_linter_aliases = {'bash': 'sh'}
 let g:ale_linters = {
     \ 'c': [],
     \ 'cpp': [],
-    \ 'python': ['flake8'],
+    \ 'python': ['flake8', 'mypy'],
     \ }
 let g:ale_sign_error = '✗'
 let g:ale_sign_warning = '⚠'
