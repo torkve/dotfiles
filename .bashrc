@@ -75,6 +75,10 @@ fi
 # }}}
 
 vidstrip() {
+    if [ "$#" -lt 3 ]; then
+        echo "Usage: vidstrip filename start duration"
+        return
+    fi
     local fn=$1
     local start=$2
     local duration=$3
