@@ -1,0 +1,155 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+scan_timeout = 100
+command_timeout = 1000
+add_newline = false
+
+format = "${username}@$hostname:$directory${custom.arc_branch}$git_branch$git_commit$git_state$git_status$hg_branch$python$rust$kubernetes $time $cmd_duration $fill $line_break$status$character"
+
+aws.disabled = true
+azure.disabled = true
+battery.disabled = true
+buf.disabled = true
+bun.disabled = true
+c.disabled = true
+cmake.disabled = true
+cobol.disabled = true
+conda.disabled = true
+crystal.disabled = true
+daml.disabled = true
+dart.disabled = true
+deno.disabled = true
+docker_context.disabled = true
+dotnet.disabled = true
+elixir.disabled = true
+elm.disabled = true
+erlang.disabled = true
+fennel.disabled = true
+fossil_branch.disabled = true
+gcloud.disabled = true
+git_metrics.disabled = true
+golang.disabled = true
+guix_shell.disabled = true
+gradle.disabled = true
+haskell.disabled = true
+haxe.disabled = true
+helm.disabled = true
+java.disabled = true
+julia.disabled = true
+kotlin.disabled = true
+localip.disabled = true
+lua.disabled = true
+memory_usage.disabled = true
+meson.disabled = true
+nim.disabled = true
+nix_shell.disabled = true
+nodejs.disabled = true
+ocaml.disabled = true
+opa.disabled = true
+openstack.disabled = true
+os.disabled = true
+package.disabled = true
+perl.disabled = true
+php.disabled = true
+pijul_channel.disabled = true
+pulumi.disabled = true
+purescript.disabled = true
+rlang.disabled = true
+raku.disabled = true
+red.disabled = true
+ruby.disabled = true
+scala.disabled = true
+shell.disabled = true
+shlvl.disabled = true
+singularity.disabled = true
+spack.disabled = true
+sudo.disabled = true
+swift.disabled = true
+terraform.disabled = true
+vagrant.disabled = true
+vlang.disabled = true
+vcsh.disabled = true
+zig.disabled = true
+
+[character]
+success_symbol = "[➜](bold)"
+error_symbol = "[✗](bold red)"
+
+[cmd_duration]
+min_time = 100
+show_milliseconds = true
+
+[directory]
+truncation_length = 10
+style = ''
+truncate_to_repo = false
+repo_root_style = 'purple'
+repo_root_format = '[$before_root_path]($before_repo_root_style)[$repo_root$path]($repo_root_style)[$read_only]($read_only_style)'
+format = '[$path]($style)[$read_only]($read_only_style)'
+
+[fill]
+symbol = "─"
+style = 'gray'
+
+[git_branch]
+format = '( \(${symbol}git: [$branch]($style)\))'
+style = 'bold purple'
+
+[git_commit]
+
+[git_state]
+
+[git_status]
+format = "([$all_status]($style))"
+style = 'bold purple'
+
+[hg_branch]
+disabled = false
+format = "( \\(${symbol}hg: [$branch]($style)\\))"
+
+[custom.arc_branch]
+command = '''arc info --json | jql -r '."branch"' '''
+when = "arc info"
+os = "linux"
+description = 'Shows arc branch status'
+format = '( \(${symbol}arc: [$output]($style)\))'
+style = 'bold purple'
+symbol = ' '
+
+[hostname]
+ssh_only = false
+format = "[$ssh_symbol$hostname]($style)"
+style = 'yellow'
+
+[jobs]
+
+[kubernetes]
+disabled = false
+detect_folders = ["/home/torkve/workspace/arc/"]
+format = '[ \(${symbol}k8s on $context\)]($style)'
+
+[python]
+pyenv_version_name = true
+detect_extensions = []
+detect_files = ['__init__.py']
+
+[rust]
+
+[status]
+disabled = false
+map_symbol = false
+format = "[$int ]($style)"
+style = ''
+success_symbol = '0'
+
+[time]
+disabled = false
+format = '[\[$time\]]($style)'
+time_format = "%Y-%m-%d %H:%M:%S"
+style = "cyan"
+
+[username]
+show_always = true
+style_root = "red bold"
+style_user = "green"
+format = '[$user]($style)'

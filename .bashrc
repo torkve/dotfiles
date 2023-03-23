@@ -197,166 +197,19 @@ EOF
 }
 # }}}
 
-# VCS info methods {{{
-make_vcs_status () {
-    local vcs=$1
-    local branch=$2
-    local dirty=$3
-
-    if [ ! -z "$branch" ];
-    then
-        if [ ! -z "$color_is_on" ]; then
-            if [ -z "$dirty" ]; then
-                echo " ($vcs: ${color_green}✅${branch}${color_off})"
-            else
-                echo " ($vcs: ${color_red}❌${branch}${color_off})"
-            fi
-        else
-            echo " ($vcs: ${branch})"
-        fi
-    fi
-}
-
-parse_git_status () {
-    # clear git variables
-    local GIT_BRANCH
-    local GIT_DIRTY
-    local GIT_BIN
-    local GIT_STATUS
-    local CUR_DIR
-
-    # exit if no git found in system
-    GIT_BIN=$(command -v git 2>/dev/null)
-    [ -z "$GIT_BIN" ] && return
-
-    # check we are in git repo
-    CUR_DIR="$PWD"
-    while [ ! -d "${CUR_DIR}/.git" ] && [ ! -z "$CUR_DIR" ] && [ ! "$CUR_DIR" = "/" ]; do CUR_DIR=${CUR_DIR%/*}; done
-    [ ! -d "${CUR_DIR}/.git" ] && return
-    # get git branch
-    GIT_BRANCH=$($GIT_BIN symbolic-ref -q --short HEAD 2>/dev/null)
-    if [ -z "$GIT_BRANCH" ];
-    then
-        GIT_BRANCH=$($GIT_BIN describe --tags --exact-match 2>/dev/null)
-        [ -z "$GIT_BRANCH" ] && return
-        GIT_BRANCH="<tag>$GIT_BRANCH"
-    fi
-    [ -z "$GIT_BRANCH" ] && return
-
-    # get git status
-    GIT_STATUS=$($GIT_BIN status --porcelain 2>/dev/null)
-    [ -n "$GIT_STATUS" ] && GIT_DIRTY=true
-
-    make_vcs_status git "$GIT_BRANCH" "$GIT_DIRTY"
-}
-
-parse_hg_status () {
-    local HG_BRANCH
-    local HG_DIRTY
-    local HG_BIN
-
-    HG_BIN=$(command -v hg 2>/dev/null)
-    [ -z "$HG_BIN" ] && return
-
-    HG_BRANCH=$(LANGUAGE=en LANG=C $HG_BIN repostate 2>/dev/null)
-    HG_DIRTY=$?
-    case "$HG_DIRTY" in
-        "0")
-            make_vcs_status hg "$HG_BRANCH" ""
-            ;;
-        "1")
-            make_vcs_status hg "$HG_BRANCH" "true"
-            ;;
-    esac
-}
-
-parse_arc_status() {
-    local ARC_BIN
-    local ARC_BRANCH
-    local ARC_DIRTY
-
-    ARC_BIN=$(command -v arc 2>/dev/null)
-    [ -z "$ARC_BIN" ] && return
-
-    while read -r LINE;
-    do
-        if [[ "$LINE" =~ ^##\ ([a-zA-Z0-9_-]+)\.\.\. ]];
-        then
-            ARC_BRANCH=${BASH_REMATCH[1]}
-        elif [[ "$LINE" =~ ^##\ ([a-zA-Z0-9_-]+) ]];
-        then
-            ARC_BRANCH=${BASH_REMATCH[1]}❓
-        else
-            ARC_DIRTY=1
-        fi
-    done < <( $ARC_BIN status -bs -u no --no-ahead-behind --no-sync-status 2>/dev/null )
-    make_vcs_status arc "$ARC_BRANCH" "$ARC_DIRTY"
-}
-
-# }}}
-
-# Prompt {{{
-prompt_command () {
-    local RETCODE=$?
-    local TIMESTAMP
-    local PS1_VCS
-    local color_user
-    local UPPER_LINE
-    local UPPER_LEN
-    local fillsize
-    local FILL
-    local VENV
-
-    # errno
-    if [ $RETCODE -eq 0 ];
-    then
-        RETCODE="${color_green}${RETCODE}${color_off}"
-    else
-        RETCODE="${color_red}${RETCODE}${color_off}"
-    fi
-    
-    # parse VCS status
-    [ -z "$PS1_VCS" ] && PS1_VCS=$(parse_hg_status)
-    [ -z "$PS1_VCS" ] && PS1_VCS=$(parse_git_status)
-    [ -z "$PS1_VCS" ] && PS1_VCS=$(parse_arc_status)
-    
-    TIMESTAMP="[$(date +'%Y-%m-%d %H:%M:%S')]"
-
-    if $color_is_on; then
-        # set user color
-        case $(id -u) in
-            0)
-                color_user=$color_red
-                ;;
-            *)
-                color_user=$color_green
-                ;;
-        esac
-    fi
-
-    if [ ! -z "$VIRTUAL_ENV" ]; then
-        VENV="${color_yellow}($(basename "$VIRTUAL_ENV"))${color_off} "
-    fi
-
-    UPPER_LINE="${VENV}${USER}@${HOSTNAME}:${PWD}${PS1_VCS} ${TIMESTAMP}"
-    UPPER_LEN=$(printf "%s" "$UPPER_LINE" | sed -r "s/\[?\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]\]?//g" | wc -c | tr -d " ")
-    # calculate fillsize
-    fillsize=$((COLUMNS-UPPER_LEN-1))
-
-    FILL=$color_gray
-    while [ $fillsize -gt 0 ]; do FILL="${FILL}─"; fillsize=$((fillsize-1)); done
-    FILL="${FILL}${color_off}"
-    
-    # set new color prompt
-    PS1="${VENV}${color_user}\u${color_off}@${color_yellow}\h${color_off}:${color_white}\w${color_off}${PS1_VCS} ${color_blue}${TIMESTAMP}${color_off} ${FILL}\n${RETCODE} ➜ "
-}
-PROMPT_COMMAND=prompt_command
-# }}}
-
 # {{{ Skynet
 if [ -f "$HOME/.skynet_aliases" ]; then
     . "$HOME/.skynet_aliases"
 fi
+# }}}
+
+# Prompt {{{
+
+# prerequisites:
+#   cargo install starship
+#   cargo install jql (for arc)
+eval "$(starship init bash --print-full-init)"
+
 # }}}
 
 # vim: ts=4 sts=4 sw=4 et fdm=marker:
